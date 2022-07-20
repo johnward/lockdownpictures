@@ -23,6 +23,8 @@ const scene = new THREE.Scene()
 const textureLoader = new THREE.TextureLoader()
 const matcapTexture = textureLoader.load('textures/matcaps/8.png')
 const pic1 = textureLoader.load('./textures/pic1.jpg')
+const floorTexture = textureLoader.load('./textures/FloorsCheckerboard_S_Diffuse.jpg')
+const floorTextureNormal = textureLoader.load('./textures/FloorsCheckerboard_S_Normal.jpg')
 
 /**
  * Fonts
@@ -87,29 +89,65 @@ const sizes = {
  * Floor
  */
  const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(10, 10),
+    new THREE.PlaneGeometry(20, 10),
     new THREE.MeshStandardMaterial({
-        color: '#444444',
+        //color: '#444444',
+        map: floorTexture,
         metalness: 0,
         roughness: 0.5
     })
 )
+floor.material.side = THREE.DoubleSide
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
 scene.add(floor)
 
 
 /**
- * Painting 1
+ * Back Wall
  */
-const painting = new THREE.Mesh(
-    new THREE.PlaneGeometry(1, 1),
+const wall1 = new THREE.Mesh(
+    new THREE.PlaneGeometry(20, 3),
     new THREE.MeshStandardMaterial({
-        map: pic1
+        color: '#444444',
+        metalness: 0,
+        roughness: 0.5
     })
 )
-painting.position.y = 0.75
-scene.add(painting)
+wall1.position.z = 5
+wall1.position.y = 1.5
+wall1.material.side = THREE.DoubleSide
+scene.add(wall1)
+
+
+
+const paintings = [pic1, pic1, pic1, pic1, pic1, pic1];
+let xPosition = -8;
+
+
+for (let paintingTex of paintings) {
+    //console.log(paintingTex)
+    console.log("Looping")
+
+    const painting = new THREE.Mesh(
+        new THREE.PlaneGeometry(1, 0.75),
+        new THREE.MeshStandardMaterial({
+            map: paintingTex
+        })
+    )
+    painting.material.side = THREE.DoubleSide
+    painting.position.y = 0.75
+    painting.position.z = 4.99
+    painting.position.x = xPosition
+    scene.add(painting)
+
+    xPosition += 3
+}
+
+/**
+ * Painting 1
+ */
+
 
 /**
  * Lights
