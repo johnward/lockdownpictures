@@ -100,7 +100,7 @@ const sizes = {
 floor.material.side = THREE.DoubleSide
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
-//scene.add(floor)
+scene.add(floor)
 
 
 /**
@@ -197,8 +197,9 @@ function createMaterialArray(filename) {
 
 const materialArray = createMaterialArray(skyboxImage)
 //console.log(materialArray)
-const skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000)
+const skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000)
 const skybox = new THREE.Mesh(skyboxGeo, materialArray)
+skybox.position.y = 1000
 skybox.material.side = THREE.DoubleSide
 scene.add(skybox)
  
@@ -223,7 +224,7 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 3000)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 200000)
 camera.position.x = 1
 camera.position.y = 1
 camera.position.z = 2
