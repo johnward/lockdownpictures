@@ -100,7 +100,7 @@ const sizes = {
 floor.material.side = THREE.DoubleSide
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
-scene.add(floor)
+//scene.add(floor)
 
 
 /**
@@ -166,6 +166,41 @@ directionalLight.shadow.camera.bottom = - 7
 directionalLight.position.set(5, 5, 5)
 scene.add(directionalLight)
 
+function createPathStrings(filename) {
+    const basePath = "./skybox/elyvisions/"
+    const baseFilename = basePath + filename
+    const fileType = ".png"
+    const sides = ["ft", "bk", "up", "dn", "rt", "lf"]
+    const pathStings = sides.map(side => {
+        return baseFilename + "_" + side + fileType;
+    })
+    
+    console.log(pathStings)
+    return pathStings
+  }
+
+let skyboxImage = "rainbow";
+
+function createMaterialArray(filename) {
+
+    const skyboxImagepaths = createPathStrings(filename)
+    const materialArray = skyboxImagepaths.map(image => {
+        let texture = new THREE.TextureLoader().load(image)
+        let material = new THREE.MeshBasicMaterial({ map: texture })
+        material.side = THREE.BackSide
+
+        return material
+    })
+
+    return materialArray
+  }
+
+const materialArray = createMaterialArray(skyboxImage)
+//console.log(materialArray)
+const skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000)
+const skybox = new THREE.Mesh(skyboxGeo, materialArray)
+skybox.material.side = THREE.DoubleSide
+scene.add(skybox)
  
 
 
@@ -188,7 +223,7 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 3000)
 camera.position.x = 1
 camera.position.y = 1
 camera.position.z = 2
